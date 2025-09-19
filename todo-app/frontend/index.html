@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskMaster - Your Productivity Companion</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Auth Overlay -->
+    <div id="auth-overlay" class="overlay">
+        <div class="auth-container">
+            <!-- Sign In Form -->
+            <div id="signin-form" class="form active">
+                <h2>Welcome Back</h2>
+                <p>Sign in to continue your productivity journey</p>
+                <form id="signin-form-data">
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="signin-email" placeholder="Email address" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="signin-password" placeholder="Password" required>
+                        <i class="fas fa-eye toggle-password"></i>
+                    </div>
+                    <div class="options">
+                        <label>
+                            <input type="checkbox" id="remember-me">
+                            <span>Remember me</span>
+                        </label>
+                        <a href="#" id="forgot-password">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="btn-primary">Sign In</button>
+                </form>
+                <p class="auth-switch">Don't have an account? <a href="#" id="go-to-signup">Sign Up</a></p>
+            </div>
+
+            <!-- Sign Up Form -->
+            <div id="signup-form" class="form">
+                <h2>Create Account</h2>
+                <p>Join thousands of productive people</p>
+                <form id="signup-form-data">
+                    <div class="input-group">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="signup-name" placeholder="Full name" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="signup-email" placeholder="Email address" required>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="signup-password" placeholder="Password" required>
+                        <i class="fas fa-eye toggle-password"></i>
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="signup-confirm-password" placeholder="Confirm password" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Sign Up</button>
+                </form>
+                <p class="auth-switch">Already have an account? <a href="#" id="go-to-signin">Sign In</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App Container (Hidden until authenticated) -->
+    <div id="app-container" class="hidden">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <button id="sidebar-toggle" class="icon-button">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h1 class="logo">TaskMaster</h1>
+            </div>
+            <div class="header-center">
+                <div class="date-display">
+                    <span id="current-date"></span>
+                </div>
+            </div>
+            <div class="header-right">
+                <button id="notifications-btn" class="icon-button">
+                    <i class="fas fa-bell"></i>
+                    <span id="notification-count" class="notification-badge hidden">0</span>
+                </button>
+                <div class="user-menu">
+                    <img id="user-avatar" src="https://ui-avatars.com/api/?name=User&background=7269ef&color=fff" alt="User">
+                    <span id="username">User</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Sidebar -->
+            <aside class="sidebar">
+                <nav class="sidebar-nav">
+                    <a href="#" class="nav-item active" data-section="dashboard">
+                        <i class="fas fa-home"></i>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="#" class="nav-item" data-section="tasks">
+                        <i class="fas fa-tasks"></i>
+                        <span>My Tasks</span>
+                    </a>
+                    <a href="#" class="nav-item" data-section="completed">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Completed</span>
+                    </a>
+                    <a href="#" class="nav-item" data-section="add-task">
+                        <i class="fas fa-plus-circle"></i>
+                        <span>Add Task</span>
+                    </a>
+                    <div class="nav-divider"></div>
+                    <a href="#" class="nav-item" data-section="settings">
+                        <i class="fas fa-cog"></i>
+                        <span>Settings</span>
+                    </a>
+                    <a href="#" id="logout-btn" class="nav-item">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </nav>
+            </aside>
+
+            <!-- Content Area -->
+            <div class="content-area">
+                <!-- Dashboard Section -->
+                <section id="dashboard-section" class="content-section active">
+                    <div class="section-header">
+                        <h2>Dashboard</h2>
+                        <p>Welcome back! Here's your productivity overview</p>
+                    </div>
+                    <div class="stats-cards">
+                        <div class="stat-card">
+                            <div class="stat-icon pending">
+                                <i class="fas fa-clipboard-list"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="pending-tasks-count">0</h3>
+                                <p>Pending Tasks</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon completed">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="completed-tasks-count">0</h3>
+                                <p>Completed Tasks</p>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon overdue">
+                                <i class="fas fa-exclamation-circle"></i>
+                            </div>
+                            <div class="stat-info">
+                                <h3 id="overdue-tasks-count">0</h3>
+                                <p>Overdue Tasks</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="recent-tasks">
+                        <h3>Recent Tasks</h3>
+                        <div id="recent-tasks-list" class="tasks-list">
+                            <!-- Tasks will be populated here -->
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Tasks Section -->
+                <section id="tasks-section" class="content-section">
+                    <div class="section-header">
+                        <h2>My Tasks</h2>
+                        <p>Manage your pending tasks</p>
+                    </div>
+                    <div class="tasks-filter">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="today">Today</button>
+                        <button class="filter-btn" data-filter="week">This Week</button>
+                        <button class="filter-btn" data-filter="important">Important</button>
+                    </div>
+                    <div id="tasks-list" class="tasks-list">
+                        <!-- Tasks will be populated here -->
+                    </div>
+                </section>
+
+                <!-- Completed Section -->
+                <section id="completed-section" class="content-section">
+                    <div class="section-header">
+                        <h2>Completed Tasks</h2>
+                        <p>Your accomplished tasks</p>
+                    </div>
+                    <div id="completed-list" class="tasks-list">
+                        <!-- Completed tasks will be populated here -->
+                    </div>
+                </section>
+
+                <!-- Add Task Section -->
+                <section id="add-task-section" class="content-section">
+                    <div class="section-header">
+                        <h2>Add New Task</h2>
+                        <p>Create a new task to boost your productivity</p>
+                    </div>
+                    <form id="add-task-form" class="task-form">
+                        <div class="form-group">
+                            <label for="task-title">Task Title</label>
+                            <input type="text" id="task-title" placeholder="What needs to be done?" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="task-description">Description</label>
+                            <textarea id="task-description" placeholder="Add details about your task..."></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="task-due-date">Due Date</label>
+                                <input type="datetime-local" id="task-due-date">
+                            </div>
+                            <div class="form-group">
+                                <label for="task-priority">Priority</label>
+                                <select id="task-priority">
+                                    <option value="low">Low</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="checkbox-container">
+                                <input type="checkbox" id="task-reminder">
+                                <span class="checkmark"></span>
+                                Set reminder 20 minutes before due time
+                            </label>
+                        </div>
+                        <button type="submit" class="btn-primary">Add Task</button>
+                    </form>
+                </section>
+
+                <!-- Notifications Panel -->
+                <div id="notifications-panel" class="notifications-panel hidden">
+                    <div class="notifications-header">
+                        <h3>Notifications</h3>
+                        <button id="clear-notifications" class="text-button">Clear All</button>
+                    </div>
+                    <div id="notifications-list" class="notifications-list">
+                        <!-- Notifications will be populated here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="notification-toast" class="notification-toast hidden">
+        <div class="toast-icon">
+            <i class="fas fa-bell"></i>
+        </div>
+        <div class="toast-content">
+            <h4 id="toast-title">Notification</h4>
+            <p id="toast-message">This is a notification message</p>
+        </div>
+        <button id="close-toast" class="toast-close">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
